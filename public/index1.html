@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My animals</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link type="text/css" rel="stylesheet" href="/css/lightgallery.css" />
+
+    <!-- lightgallery plugins
+    <link type="text/css" rel="stylesheet" href="/css/lg-zoom.css" />
+    <link type="text/css" rel="stylesheet" href="/css/lg-thumbnail.css" /> -->
+
+    <script src="index.js" type="module"></script>
+    
+    <!-- <script src="lightgallery/lightgallery.umd.js"></script> -->
+
+    <!-- lightgallery plugins
+    <script src="js/plugins/lg-thumbnail.umd.js"></script>
+    <script src="js/plugins/lg-zoom.umd.js"></script>
+    OR
+
+    <link type="text/css" rel="stylesheet" href="css/lightgallery-bundle.css" /> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/js/lightgallery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" 
+    integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Sanity + Vanilla JavaScript</h1>
+    </header>
+    <main>
+      <h2>Animals</h2>
+      <ul>
+        <li>Loading animals…</li>
+      </ul>
+
+      <div>
+        <pre>
+¯\_(ツ)_/¯
+Your data will show up here when you've configured everything correctly
+        </pre>
+      </div>
+    </main>
+    <img class='pp' src="" alt="">
+    <form id="file-form">
+      <input type="file" name="image" id="image-input">
+      <button type="submit">Submit</button>
+    </form>
+    <canvas id="someCanvas"></canvas>
+    <div class="lightgallery">
+      <a href="KELBIS.png" data-lg-size="1600-2400">
+          <img alt=".." src="KELBIS.png" />
+      </a>
+      <a href="KELBIS.png">
+          <img alt=".." src="KELBIS.png" />
+      </a>
+    </div>
+    <video controls autoplay>
+      <source src="https://kelbis.mo.cloudinary.net/294526901_860406211601044_3866573701022593070_n.mp4" type="video/mp4">
+  </video>
+
+    <script>
+       let PROJECT_ID = "stmxuyam"
+       let DATASET = "production"
+
+       let QUERY = encodeURIComponent('*[_type == "users"]{username, profilePicture{asset -> {url}}, school, eaten}');
+
+      // Compose the URL for your project's endpoint and add the query
+      let URL1 = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${QUERY}`;
+      let URL2 = `https://${PROJECT_ID}.api.sanity.io/v2021-06-07/assets/images/${DATASET}`
+      fetch(URL1).then(response => response.json()).then(result => console.log(result))
+
+      // const reader = new FileReader();
+      // reader.addEventListener("load", () => {
+      //   // convert image file to base64 string
+      //   console.log(reader.result)
+      // }, false);
+      // let form = document.querySelector("form")
+      // form.addEventListener("submit", async(e)=> {
+      //   e.preventDefault()
+      //   let formData = new FormData();
+      //   let file = image.files[0] //Get The File Object from the file Input
+      //   formData.append("image", file);
+      //   formData.append("category", 11)
+      //   reader.readAsDataURL(file);
+      // })
+
+   
+
+    function uploadImageBlob(blob) {
+        console.log(blob)
+        fetch("/api/end", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'image/jpeg'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: JSON.stringify({hello:1}),
+        })
+        .then(response => response.json())
+        .then(result => console.log(result))
+      }
+      let image = document.querySelector("#image-input")
+      let pp = document.querySelector(".pp")
+      image.addEventListener("change", ()=> {
+        console.log(image.files[0])
+        let blobURL = URL.createObjectURL(image.files[0]) //convert it to a blob
+        console.log(blobURL)
+        pp.src = blobURL
+        const canvas = document.getElementById('someCanvas')
+        const ctx = canvas.getContext('2d')
+        ctx.fillStyle = '#f85040'
+        ctx.fillRect(0, 0, 50, 50)
+        ctx.fillStyle = '#fff'
+        ctx.font = '10px monospace'
+        ctx.fillText('Sanity', 8, 30)
+        canvas.toBlob(uploadImageBlob, 'image/jpeg')
+        console.log(canvas)
+      })
+
+      function uploadImageBlob(blob) {
+        console.log(blob)
+        fetch(URL2, {
+          method: "POST",
+          body: blob,
+        })
+        .then(response => response.json())
+        .then(result => console.log(result))
+      }
+
+      lightGalley(document.querySelector(".lightgallery"))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,377 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.home-feed {
+    margin-top: 50px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    width: 100%;
+}
+
+.post {
+    border: 1px solid red;
+    padding: 0.5rem;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.post.pos {
+    display: flex;
+}
+
+.post .postSub {
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.postSub .post-div a {
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+}
+
+/* .postSub a:focus {
+    background-color: transparent;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+} */
+
+.profile-picture, .image-design img {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 200px;
+}
+
+.post-text {
+    margin: 0.5rem 0;
+}
+
+.post-text .text-text {
+    font-size: 1.4rem;
+}
+
+.post .post-div,
+.exact-post-reply .post-div {
+    margin-left: 0.5rem;
+    position: relative;
+    width: calc(100% - 50px - 0.5rem);
+    /* border: 1px solid black; */
+}
+
+.post-div .username {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.post-div .media {
+    display: flex;
+    flex-wrap: wrap;
+    width: 98%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.post-div .media img {
+    width: 100%;
+    min-height: 110px;
+    max-height: 400px;
+    margin: 0.2rem auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.post-div .media.two img {
+    width: 49%;
+    height: 150px;
+}
+
+.post-div .media.three img {
+    width: 100%;
+    max-height: 200px;
+}
+
+.post-div .media.three .one {
+    width: 49%;
+    height: 150px;
+}
+
+.post-div .media.four img {
+    width: 49%;
+    height: 150px;
+}
+
+/* IRRELEVANT BLOCK START, MIGHT DELETE LATER */
+/* IRRELEVANT BLOCK START, MIGHT DELETE LATER */
+/* IRRELEVANT BLOCK START, MIGHT DELETE LATER */
+.media a {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.media.two {
+    justify-content: space-between;
+}
+
+.media.two a {
+    width: 50%;
+    max-height: 200px;
+}
+
+.media.three {
+    justify-content: space-between;
+}
+
+.media.three a {
+    max-height: 200px;
+}
+
+.media.three .one {
+    width: 50%;
+    max-height: 150px;
+}
+
+.media.four {
+    justify-content: space-between;
+}
+
+.media.four a {
+    width: 49%;
+    max-height: 150px;
+}
+
+/* IRRELEVANT BLOCK END, MIGHT DELETE LATER */
+/* IRRELEVANT BLOCK END, MIGHT DELETE LATER */
+
+.post .post-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-left: calc(50px + 0.5rem);
+    /* border: 1px solid red; */
+}
+
+.post-div .post-actions {
+    margin-left: 0;
+}
+
+.post-actions span {
+    font-size: 1rem;
+}
+
+.post-actions p #reply-post {
+    font-size: 1.5rem;
+}
+
+.post-actions .material-icons-outlined {
+    cursor: pointer;
+}
+
+.likeIcon.likeUser {
+    color: red;
+}
+
+.comment, .like, .share {
+    display: flex;
+    align-items: center;
+}
+
+.post-actions .count {
+    margin-left: 0.34rem;
+}
+
+.vjs-theme-city .vjs-picture-in-picture-control {
+    display: none;
+}
+
+.vjs-theme-city .vjs-play-control {
+    order: 0;
+    flex: 1;
+}
+
+.vjs-theme-city .vjs-volume-panel {
+    flex: 0;
+}
+
+.vjs_video_3-dimensions {
+    max-width: 99%;
+    min-height: 110px;
+    max-height: 400px;
+    margin: 0.2rem auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* .video-js {
+    width: 0;
+    height: 0;
+} */
+
+
+.loading-loader{
+    display:flex;
+    padding:0px 10px;
+    max-width:800px;
+    margin:0px auto;
+  }
+  
+.loading-loader aside{
+    flex: 0 0 70%;
+    display:flex;
+    flex-direction:column;
+    margin:0px auto;
+  }
+  
+  .info__box{
+    background:#fff;
+    padding:10px 20px;
+    margin:30px 5px;
+    border-radius:6px;
+    cursor:pointer;
+    display:flex;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.12),
+              0 2px 4px 0 rgba(0,0,0,0.08);
+  }
+  
+  
+  .info__text_one{
+    width:100%;
+    height:20px;
+    border-radius:4px;
+  }
+  
+  .info__text_two{
+    width:70%;
+    height:20px;
+    border-radius:4px;
+  }
+  
+  .info__text_three{
+    width:85%;
+    height:20px;
+    border-radius:4px;
+  }
+  
+  .left_box{
+    flex:0 0 70%;
+    margin-right:auto;
+  }
+  
+  .image{
+    height:80px;
+    width:80px;
+    border-radius:25px;
+  }
+  
+  .shinny{
+    background:lightgray;
+    margin:10px 0px;
+    position:relative;
+    overflow:hidden;
+  }
+  
+  .shinny::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    background:rgba(255,255,255,0.2);
+    height:100%;
+    transform:skew(5deg);
+    animation:shine infinite 1.5s ease-in-out;
+  }
+  
+  
+  @keyframes shine {
+    from {
+    transform:skew(45deg) translateX(0%);
+    }
+    
+    to{
+      transform:skew(45deg) translateX(200%);
+    }
+  }
+
+.loading-loader.loaded {
+    display: none;
+}
+
+#home-container .user-bar {
+    height: 50px;
+    width: 100%;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    z-index: 90;
+}
+
+.user-bar .user-image img {
+    height: 32px;
+    width: 32px;
+    border-radius: 200px;
+    object-fit: cover;
+}
+
+.user-bar .home-kel {
+    margin-left: 1rem;
+    font-size: 1.3rem;
+}
+
+.comment-reply {
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    z-index: 91;
+    overflow-y: scroll;
+}
+
+.comment-reply.visible {
+    display: block;
+}
+
+body.visible {
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.exact-post-reply {
+    display: flex;
+    width: 100%;
+}
+
+.exact-post-reply .image-design {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-design .design {
+    border: 0.3px solid rgb(203, 202, 202);
+    flex: 1;
+}
+
+.exact-post-reply .post-div .post-text {
+    margin: 0.7rem 0;
+}
+
+/* .comment-reply .exact-post-reply .post-text .text-text{
+    padding: 0 0.3rem;
+} */

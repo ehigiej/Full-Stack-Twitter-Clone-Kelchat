@@ -1,0 +1,159 @@
+/* html{ height: 100%; width: 100%; }
+
+body{ height: 100%; width: 100%; } */
+
+*{ margin: 0; padding: 0; }
+
+.container{ height: 100vh; margin: 0 auto 0 auto; max-width: 100vw; position: relative; width: 100vw; }
+
+.container .zoom{ background-color: #DDD; height: 100%; margin: auto; overflow: hidden; position: relative; width: 100%; }
+
+.container .zoom img{ bottom: 0; display: block; left: 0; margin: auto; max-height: 100%; max-width: 100%; position: absolute; right: 0; top: 0;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.zoom-transition{
+  transition: -moz-transform ease 200ms;
+  transition: -ms-transform ease 200ms;
+  transition: -o-transform ease 200ms;
+  transition: -webkit-transform ease 200ms;
+  transition: transform ease 200ms;
+}
+
+.media-preview-main {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  background-color: white;
+  z-index: 91;
+  display: none;
+}
+
+.media-preview-main.show-div {
+  display: flex;
+}
+
+.media-preview-main .media-main-preview-main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  transform: translateX(0%);
+  transition: transform 0.2s ease-in;
+}
+
+.media-preview-main .media-preview-container {
+  position: relative;
+  /* position: absolute;
+  left: 0; */
+  height: 100%;
+  width: 100%;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background-color: black;
+}
+
+/* .media-preview-main .media-preview-container .background-blur{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  background-image: url(https://kelbis.mo.cloudinary.net/timofey-urov-WU_y9Iz5x4o-unsplash.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(30px);
+  -webkit-filter: blur(58px);
+} */
+
+.media-preview-container .zoom {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+}
+
+.zoom img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 800px) {
+  .zoom img {
+    width: 100%;
+  }
+}
+
+.media-preview-main .action-cancel {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem;
+  top: 2%;
+  left: 2%;
+  background-color: rgb(43, 43, 43);
+  border-radius: 200px;
+  color: white;
+}
+
+.media-preview-main .action-cancel span {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.media-preview-main .action-stats {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: white;
+}
+
+.media-preview-main .action-stats .post-actions {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.media-preview-main .action-stats .post-actions span {
+  font-size: 1.1rem;
+}
+
+.media-preview-main .action-left-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: calc(50% - 12px);
+  left: 2.5%;
+  color: white;
+  background-color: rgb(43, 43, 43);
+  border-radius: 200px;
+  padding: 0.5rem;
+}
+
+.media-preview-main .action-right-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: calc(50% - 12px);
+  right: 2.5%;
+  color: white;
+  background-color: rgb(43, 43, 43);
+  border-radius: 200px;
+  padding: 0.5rem;
+}
+
+.media-preview-main .action-left-btn.off,
+.media-preview-main .action-right-btn.off {
+  display: none;
+}

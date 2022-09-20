@@ -1,0 +1,12 @@
+#login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#login-form label {
+    margin: 1rem 0;
+}
+
+#login-form input {
+    margin-bottom: 0.3rem;
+}

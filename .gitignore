@@ -1,0 +1,9 @@
+/node_modules
+.env
+public/js/lg-*.js
+public/js/lightgallery.js 
+public/js/notUse.js
+public/css/lightgallery*.css
+public/css/videojs*.css
+public/fonts
+public/media 
