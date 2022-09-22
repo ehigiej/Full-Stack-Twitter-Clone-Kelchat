@@ -21,6 +21,7 @@
     "@aws-sdk/client-s3": "^3.145.0",
     "@aws-sdk/lib-storage": "^3.145.0",
     "@sanity/base": "^2.30.4",
+    "@sanity/cli": "^2.33.3",
     "@sanity/core": "^2.30.3",
     "@sanity/default-layout": "^2.30.4",
     "@sanity/default-login": "^2.30.4",
