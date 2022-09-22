@@ -6,6 +6,9 @@
   "main": "package.json",
   "author": "Ehigie Jesse <jesseehigie@gmail.com>",
   "license": "UNLICENSED",
+  "engines": {
+    "node": "14x"
+  },
   "scripts": {
     "start": "sanity start",
     "build": "sanity build",
