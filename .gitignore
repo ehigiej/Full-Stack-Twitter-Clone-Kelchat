@@ -7,3 +7,5 @@ public/css/lightgallery*.css
 public/css/videojs*.css
 public/fonts
 public/media 
+package-lock.json
+yarn.lock
