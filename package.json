@@ -10,9 +10,9 @@
     "node": "16.x"
   },
   "scripts": {
-    "start": "sanity start",
+    "sanity": "sanity start",
     "build": "sanity build",
-    "devStart": "nodemon app.js"
+    "start": "node app.js"
   },
   "keywords": [
     "sanity"

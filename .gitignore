@@ -9,3 +9,7 @@ public/fonts
 public/media 
 package-lock.json
 yarn.lock
+README.md 
+sanity.json 
+tsconfig.json 
+.eslintrc
