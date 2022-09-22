@@ -7,7 +7,7 @@
   "author": "Ehigie Jesse <jesseehigie@gmail.com>",
   "license": "UNLICENSED",
   "engines": {
-    "node": "16x"
+    "node": "16.x"
   },
   "scripts": {
     "start": "sanity start",
