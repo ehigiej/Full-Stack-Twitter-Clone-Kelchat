@@ -13,15 +13,6 @@ const helmet = require("helmet")
 const cors = require("cors")
 const { S3Client } = require('@aws-sdk/client-s3');
 const multerS3 = require("multer-s3")
-const redis = require("redis")
-const redisClient = redis.createClient({
-    socket : {
-        port : process.env.REDIS_PORT,
-        host : process.env.REDIS_URL
-    },
-    password: process.env.REDIS_PASSWORD
-})
-const DEFAULT_EXPIRATION = 3600
 let s3 = new S3Client({
     region: process.env.REGION,
     credentials: {
@@ -97,6 +88,14 @@ const upload = multer({
 
 const PORT = process.env.PORT || 3000
 
+//REDIS_CLIENT 
+const redisClient = require("./redis/redis") //CONNECT TO REDIS
+async function connectRedis() {
+    redisClient.on('error', (err) => console.log('Redis Client Error', err));
+    await redisClient.connect()
+}
+connectRedis()
+
 //homepage
 const homepage = require("./router/home")
 
@@ -116,10 +115,7 @@ const comment = require("./router/comment")
 //PostInfo 
 //Show info about a post via post route 
 const post = require("./router/post")
-async function connectRedis() {
-    await redisClient.connect()
-}
-connectRedis()
+
 app.use("/", homepage)
 app.get("/compose", (req, res)=>{
     res.render("compose")

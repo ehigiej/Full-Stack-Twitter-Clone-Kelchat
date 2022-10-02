@@ -1,22 +1,17 @@
 {
   "name": "new-life",
-  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "package.json",
   "author": "Ehigie Jesse <jesseehigie@gmail.com>",
-  "license": "UNLICENSED",
+  "license": "ISC",
   "engines": {
     "node": "16.x"
   },
   "scripts": {
     "sanity": "sanity start",
-    "build": "sanity build",
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
-  "keywords": [
-    "sanity"
-  ],
   "dependencies": {
     "@aws-sdk/client-s3": "^3.145.0",
     "@aws-sdk/lib-storage": "^3.145.0",

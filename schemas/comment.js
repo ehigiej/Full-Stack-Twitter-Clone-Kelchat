@@ -42,6 +42,11 @@ export default {
                     to: [{type: "comment"}]
                 }
             ]
+        },
+        {
+            name: "commentLike",
+            title: "Comment Likes",
+            type: "like"
         }
     ]
 }

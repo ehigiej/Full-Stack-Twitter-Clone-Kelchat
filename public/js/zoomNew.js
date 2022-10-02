@@ -72,7 +72,7 @@ export function zoomEffect() {
         media.addEventListener("click", (e)=>{
             let imgParentDiv = e.target.parentElement //Img Parent Div
             let parentImages = imgParentDiv.querySelectorAll("img") //Get All The Images in parent Div 
-            scrollCountLimit = parentImages.length //set Number of Images in a Post 
+            scrollCountLimit = parentImages.length //set scrollCountLimit to Number of Images in a Post 
             currentTxLevel = parseInt(e.target.getAttribute("data-id")) //Set The Current Image in View 
             imgMediaPreview.style = `transform: translateX(-${(currentTxLevel - 1) * 100}%)` //Translate to the currentImage In View
             imgSecPreview(parentImages) //Preview The Images in SECTION MEDIA PREVIEW 
@@ -107,20 +107,22 @@ export function zoomEffect() {
     /*DETERMINE WHEN A USER SWIPE LEFT AND RIGHT WHEN PREVIEWING IMAGES*/
     /*DETERMINE WHEN A USER SWIPE LEFT AND RIGHT WHEN PREVIEWING IMAGES*/
     imgMediaPreview.addEventListener('swiped-left', function(e) {
+        /* A PREVIEW IMAGE IS INSIDE A DIV CALLED ZOOM 
+        WHEN IMG IS ZOOMED, IT'S PARENT DIV(ZOOM) GET A CLASS NAME OF ZOOM-ACTIVE*/
         // console.log(e.target); // the element that was swiped
         //WHEN SWIPED LEFT 
-        let targetElement = e.target //Get the target (a sensor for where was touched on the screen)
-        let targetType = targetElement.tagName.toLowerCase() //Get the targetElement Tag Type
+        let targetElement = e.target //Get the target (a sensor for where was touched on the screen either the IMG or It's Div)
+        let targetType = targetElement.tagName.toLowerCase() //Get the targetElement Tag Type e.g IMG or DIV
         let parentDiv; //ParentDiv to hold the targetElement parentDiv 
         if(targetType == "img") {
-            //If targetElement is an Image 
-            parentDiv = e.target.parentElement //Set ParentDiv to it's ParentElement 
-        } else if (targetType == "div") parentDiv = e.target //If targetType is an Img
+            //If targetElement is an Image i.e The Img itself
+            parentDiv = e.target.parentElement //Set ParentDiv to it's ParentElement i.e the Parent is a Div with classname ZOOM 
+        } else if (targetType == "div") parentDiv = e.target //If targetType is a Div, if Zoom Div itself was clicked  
         //CHECK IF CURRENT IMAGE HAS A ZOOM-ACTIVE (which signifies active zooming)
         if(!parentDiv.classList.contains("zoom-active")) {
             //If Not zoom-active, scroll left
             if(currentTxLevel != scrollCountLimit) {
-                let level = currentTxLevel;
+                let level = currentTxLevel; //Set Level to currentTxLevel
                 imgMediaPreview.style = `transform: translateX(-${level * 100}%)`
                 currentTxLevel += 1
                 previewControls(currentTxLevel, scrollCountLimit)
@@ -128,13 +130,15 @@ export function zoomEffect() {
         }
     });
     imgMediaPreview.addEventListener('swiped-right', function(e) {
+        /* A PREVIEW IMAGE IS INSIDE A DIV CALLED ZOOM 
+        WHEN IMG IS ZOOMED, IT'S PARENT DIV(ZOOM) GET A CLASS NAME OF ZOOM-ACTIVE*/
         // console.log(e.target); // the element that was swiped
         //WHEN SWIPED RIGHT
-        let targetElement = e.target
-        let targetType = targetElement.tagName.toLowerCase()
-        let parentDiv;
+        let targetElement = e.target //Get the target (a sensor for where was touched on the screen either the IMG or It's Div)
+        let targetType = targetElement.tagName.toLowerCase()  //Get the targetElement Tag Type e.g IMG or DIV
+        let parentDiv; //ParentDiv to hold the targetElement parentDiv 
         if(targetType == "img") {
-            parentDiv = e.target.parentElement 
+            parentDiv = e.target.parentElement //Set ParentDiv to it's ParentElement 
         } else if (targetType == "div") parentDiv = e.target
         if(!parentDiv.classList.contains("zoom-active")) {
             if(currentTxLevel != 1) {
@@ -148,7 +152,6 @@ export function zoomEffect() {
     });
 }
 
-zoomEffect()
 
 /*A FUNCTION THAT TAKES AN ARRAY OF IMAGES AND PREVIEW THEM FOR THE USER */
 //Preview Images in Section Img Preview

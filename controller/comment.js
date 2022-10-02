@@ -1,6 +1,6 @@
 const client = require("../sanity/sanity")
 
-/* HANDLE WHEN USERS UPLOAD COMMENS */
+/* HANDLE WHEN USERS UPLOAD COMMENTS */
 const comment = async(req, res) => {
     const cookies = req.cookies //get the cookies 
     const userId = cookies.userId //get the user's Id for reference from the cookies
@@ -37,7 +37,7 @@ const comment = async(req, res) => {
         .append('postComment', [{_ref: commentDoc._id}])
         .commit({autoGenerateArrayKeys: true})
     // console.log(req.body)
-    res.status(200).send(commentDoc)
+    res.status(200).send(commentDoc._id)
 }
 
 
@@ -59,7 +59,20 @@ const commentDuplicate = async(req, res) => {
     res.send(commentDoc)
 }
 
+/* DELETE COMMENT */
+/* DELETE COMMENT */
+const commentDelete = async(req, res) => {
+    const commentId = req.body.commentId //Comment Id 
+    const postId = req.body.postId //Post Id 
+    /* FIRST REMOVE COMMENT FROM POST COMMENT ARRAY, THEN DELETE COMMENT DOCUMENT */
+    let removeComment = [`postComment[_ref == "${commentId}"]`]
+    await client.patch(postId).unset(removeComment).commit() //REMOVE COMMENT FROM POST COMMENT ARRAY 
+    await client.delete(commentId);
+    res.status(200).send("deleted")
+}
+
 module.exports = {
     comment,
-    commentDuplicate
+    commentDuplicate,
+    commentDelete
 }

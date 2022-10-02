@@ -1,15 +1,15 @@
 /node_modules
 .env
-public/js/lg-*.js
-public/js/lightgallery.js 
-public/js/notUse.js
-public/css/lightgallery*.css
-public/css/videojs*.css
-public/fonts
-public/media 
-package-lock.json
-yarn.lock
-README.md 
-sanity.json 
-tsconfig.json 
-.eslintrc
+# public/js/lg-*.js
+# public/js/lightgallery.js 
+# public/js/notUse.js
+# public/css/lightgallery*.css
+# public/css/videojs*.css
+# public/fonts
+# public/media 
+# package-lock.json
+# yarn.lock
+# README.md 
+# sanity.json 
+# tsconfig.json 
+# .eslintrc

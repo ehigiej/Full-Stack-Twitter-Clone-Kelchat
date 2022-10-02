@@ -7,8 +7,8 @@ socket.on("Message", msg => {
 
 let pageTitle = document.querySelector("head title"); //THE PAGE TITLE TAG
 
-let userProfileImage = document.querySelector(".user-bar .user-image"); //ProfileImageTag
-let commentProfileImage = document.querySelector(".comment-reply .post-section .post-sub-section img") //Set The ProfileImage of currentUser to our prisoner
+let userProfileImage = document.querySelector(".user-bar .user-image"); //Profile Picture Tag for Profile Picture that shows at the top of the screen 
+let commentProfileImage = document.querySelector(".comment-reply .post-section .post-sub-section img") //User's Profile Picture Tag that shows in comment Section 
 /*A FUNCTION TO GET USER'S INFORMATION 
 PROFILE PICTURE, FOLLOWING AND FOLLOWERS*/
 async function getInfo() {
@@ -16,12 +16,11 @@ async function getInfo() {
     let {data} = await axios.get("/myInfo/info")
     console.log(data)
     userProfileImage.innerHTML = `
-    <img src="${data.profilePicture}" alt="">` //Set User' Profile Picture
-    commentProfileImage.src = data.profilePicture //Current User's Profile Image for Comment Reply Section
+    <img src="${data[0].profilePicture}" alt="">` //Set User' Profile Picture
+    commentProfileImage.src = data[0].profilePicture //Set Current User's Profile Image for Comment Reply Section
     const userFollowing = [] //An Array For Current User Following Lists 
     //Append All the usernames of User's Current user is following to userFollowing List 
-    //Username is needed for sanity.io propose
-    data.following.forEach((user, index) => {
+    data[0].following.forEach((user, index) => {
       userFollowing.push(user.username) //Push Username
     })
     socket.emit("Login", {
@@ -213,26 +212,29 @@ function likeSensor(){
 async function likePost() {
   //A function to update the database whenever a post is liked or unliked
   let checker; //checker signifies if a post is liked(true) or unliked(false)
+  /* CHECK IF POST IS LIKED BY USER 
+  A POST LIKED BY USER HAS A CLASSLIST OF likeUser*/
   if(this.classList.contains("likeUser")) {
-    checker = true 
-    this.classList.remove("likeUser")
-    this.innerHTML = "favorite_border" //change Icon
-    //Get The Likes Count
+    checker = true //SET CHECKER TO TRUE TO SIGNIFY POST IS LIKED AND USER INTEND TO UNLIKE 
+    this.classList.remove("likeUser") //REMOVE likeUser (MEANING UNLIKE POST)
+    this.innerHTML = "favorite_border" //change Icon (change like Icon back to transparent/white)
+    //Get The Likes Count and decrease by 1
     let likeCount = parseInt(this.nextElementSibling.innerText) - 1//convert to Int
     this.nextElementSibling.innerHTML = likeCount //update nextElementSibling
-    if(likeCount == 0) this.nextElementSibling.innerHTML = ""
+    if(likeCount == 0) this.nextElementSibling.innerHTML = "" //IF likecount is 0, Display "" instead of 0
   } else {
-    checker = false
-    this.classList.add("likeUser")
-    this.innerHTML = "favorite" //change icon
-    //Get The Likes Count
+    /* WHEN POST IS LIKED*/
+    checker = false //SET CHECKER TO FALSE TO SIGNIFY POST IS UNLIKED AND USER INTEND TO LIKE
+    this.classList.add("likeUser") //Add likeUser (Meaning Like Post)
+    this.innerHTML = "favorite" //change icon (change like Icon to Red)
+    //Get The Likes Count and increment by 1
     let likeCount = this.nextElementSibling.innerText //convert to Int 
     if(likeCount.length == 0 ) likeCount = 0 //set likeCount to 0 from empty string
     likeCount = parseInt(likeCount) //convert likeCount to Int
     likeCount += 1
     this.nextElementSibling.innerHTML = likeCount
   } 
-  // Get The Post Id 
+  // Get The Id of The Post 
   let postId = this.parentElement.parentElement.parentElement.getAttribute("id") //Get The Post Id 
   postId = postId.slice(2) //cut out the letters 'ID' from the Id attribute 
   try {
@@ -249,7 +251,7 @@ async function likePost() {
 let commentReply = document.querySelector(".comment-reply") //Comment Reply section div
 let body = document.querySelector("body") //DOM body Element
 let cancelReply = document.querySelector(".reply-main .return-controls .return-btn") //Cancel Btn for Comment Reply Section Div
-let postBtn = commentReply.querySelector(".reply-main .return-controls .send-reply") //POST Btn
+let postBtn = commentReply.querySelector(".reply-main .return-controls .send-reply") //POST Btn to post a comment 
 let uploadFiles = document.querySelector("#reply-upload") //File Input for Media 
 let kelpost = document.querySelector(".post-actions #reply-post") //kelpost Area (Area to type text) 
 let uploadedFilesDiv = document.querySelector(".post-actions .uploads-images") //Div to Display Media Files that are selected by User For Upload 
@@ -351,7 +353,7 @@ postBtn.addEventListener("click", async()=>{
 
 /* FOR COMMENT SECTION
 replyPostDesign is the Div to hold the Exact Post Authors Profile's Picture
-replyPostDiv is the div to hold the Exact Post Author's Username and Caption from Post To Be Commented on*/
+replyPostDiv is the div to hold the Exact Post Author's Username and Caption of Post To Be Commented on*/
 let replyPostDesign = document.querySelector(".comment-reply .reply-main .exact-post-reply .image-design")
 let replyPostDiv = document.querySelector(".exact-post-reply .post-div")
 
@@ -361,7 +363,7 @@ cancelReply.addEventListener("click", cancelReplyBar)
 /* When Cancel Comment Reply Section is Clicked 
 Reset Comment Reply Section*/
 function cancelReplyBar() {
-  //a function to effect the cancelation of comment or post bar
+  //A FUNCTION TO RESET COMMENT REPLY SECTION
   postBtn.classList.remove("comment") //remove comment from postBtn
   uploadFiles.value = null //remove all files in fileInput
   kelpost.innerHTML = "" //set text input to null

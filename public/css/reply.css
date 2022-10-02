@@ -133,7 +133,7 @@ body {
     justify-content: space-between;
 }
 
-#myEmoji {
+#myEmoji, #myEmoji1 {
     display: none;
 }
 
@@ -154,7 +154,8 @@ body {
     margin-left: 3px;
 }
 
-.actions-action .front-action #reply-upload {
+.actions-action .front-action #reply-upload,
+.actions-action .front-action #reply-upload1 {
     display: none;
 }
 
@@ -346,9 +347,14 @@ body {
     padding-top: 0.3rem;
 }
 
-.front-count.count-disabled {
+.front-count.count-disabled .card,
+.front-count.count-disabled  .send-reply-reply.error {
     display: none;
 }
+
+/* .front-count.count-disabled .send-reply-reply{
+
+} */
 
 .front-count .add-link-post {
     margin-left: 10px;

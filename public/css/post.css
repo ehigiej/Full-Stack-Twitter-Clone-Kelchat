@@ -137,7 +137,38 @@
     display: none;
 }
 
+#main-container .loading-div.loaded {
+    margin: 0;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.post {
+    border: none;
+    border-bottom: 1px solid rgb(233, 232, 232);
+}
+
+.post.loading-post {
+    opacity: 0.5;
+}
+
+.post-comments .post-text .text-text {
+    font-size: 1.03rem;
+}
+
+.post-comments .post-div .media.three img {
+    max-height: 150px;
+}
+
+.post-comments .post-div .media img {
+    max-height: 250px;
+}
+
+.post-comments .post-div .media.three .one,
+.post-comments .post-div .media.four img ,
+.post-comments .post-div .media.two img {
+    height: 100px;
 }
