@@ -114,6 +114,7 @@ USING URL GET THE POST ID */
 async function getPostInfo() {
     mainMainPostDiv.classList.add("loading") //set mainMainPostDiv to display None
     let postInfo; //set postInfo to hold Infomation about the Post 
+    console.log(postId)
     try {
         let {data} = await axios.post("/user/postInfo", {
             postId

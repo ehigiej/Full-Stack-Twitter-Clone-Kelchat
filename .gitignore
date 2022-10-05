@@ -1,5 +1,6 @@
 /node_modules
 .env
+# /Full-Stack-Twitter-Clone-Kelchat
 # public/js/lg-*.js
 # public/js/lightgallery.js 
 # public/js/notUse.js
