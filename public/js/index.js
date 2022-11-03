@@ -19,12 +19,15 @@ async function getInfo() {
     <img src="${data[0].profilePicture}" alt="">` //Set User' Profile Picture
     commentProfileImage.src = data[0].profilePicture //Set Current User's Profile Image for Comment Reply Section
     const userFollowing = [] //An Array For Current User Following Lists 
-    //Append All the usernames of User's Current user is following to userFollowing List 
-    data[0].following.forEach((user, index) => {
-      userFollowing.push(user.username) //Push Username
-    })
+    //Append All the usernames of User's Current user is following to userFollowing List
+    if(data[0].following != null) {
+      /* If user is following other users */
+      data[0].following.forEach(user => {
+        userFollowing.push(user._ref) //Push Username
+      })
+    } 
     socket.emit("Login", {
-      username: data.username,
+      userId: data[0]._id,
       followers: userFollowing
     })
   } catch (error) {
@@ -50,6 +53,7 @@ async function getPost() {
     console.log(data)
   } catch (error) {
     console.log(error.response.data)
+    throw "ERROR"; //If there's an error, stop function
   }
   //Create each post
   loader.classList.add("loaded") //Add loaded to loader div to cancel loading effect style 
@@ -65,20 +69,31 @@ async function getPost() {
     let postSubDiv = document.createElement("div") //POST SUB DIV 
     /* For POST SUB DIV, FIRST APPEND THE POST PROFILE PICTURE */
     postSubDiv.innerHTML = `
-      <a href="/user/${post.userInfo.username}/${post._id}">
-        <img src="${post.userInfo.profilePicture}" alt="${post.userInfo.username}_profilePicture" class="profile-picture">
-      </a>` //A Tag Href is a Link to post information. 
+      <div class="a-links">
+        <a href="/user/${post.postedBy.username}" class="user-a">
+          <img src="${post.postedBy.profilePicture}" alt="${post.postedBy.username}_profilePicture" class="profile-picture">
+        </a>
+        <a href="/user/${post.postedBy.username}/${post._id}" class="post-a"></a>
+      </div>`
     /* CREATE ANOTHER DIV TO HOLD USERNAME, CAPTION AND MEDIA FILES IF ANY */
     let usCapMediaDiv = document.createElement("div") //US for Username, Cap for Caption
+    /* Handle post caption, if there's a caption, set caption to post caption */
+    let postCaption = post.caption ? post.caption : "" 
     usCapMediaDiv.innerHTML =  `
-      <a href="/user/${post.userInfo.username}/${post._id}">
-        <span class="username">${post.userInfo.username}</span>
+      <div class="user-tt-links">
+        <a href="/user/${post.postedBy.username}">
+          <span class="username">${post.postedBy.username}</span>
+        </a>
+        <a href="/user/${post.postedBy.username}/${post._id}" class="tt-link"></a>
+      </div>
+      <a href="/user/${post.postedBy.username}/${post._id}">
         <div class="post-text">
-          <p class="text-text">${post.caption}</p>
+          <p class="text-text">${postCaption}</p>
         </div>
       </a>`
     /* CHECK IF POST HAS MEDIA FILES, IF IT DOES CREATE A DIV FOR IT */
-    let mediaLength = post.media.length //Get The Media Length of Post
+    let mediaLength;
+    if(post.media) mediaLength = post.media.length //Get The Media Length of Post
     if(mediaLength != 0) {
       //If Post has Media
       let mediaDiv = document.createElement("div"); //create Media Div
@@ -132,20 +147,20 @@ async function getPost() {
     /* COUNT POST COMMENTS AND LIKES */
     let commentCount //The Number of comment the post has
     /*Check if post has a comment or it's undefined */
-    if(post.postComment != undefined && post.postComment.length != 0) {
-      commentCount = post.postComment.length //count the comment
+    if(post.postComment != null && post.postComment != 0) {
+      commentCount = post.postComment //Get the number of comment post has
     } else {
       commentCount = ""
     }
     let postLikes;
-    /*Check if post has likes or it's undefined 
+    /*Check if post has likes or it's null
     create a Variable LikeTag to hold Temporary The InnerHTML of LikeDiv*/
     let likeTag
-    if(post.likes != undefined && post.likes.length != 0) {
+    if(post.likes != null && post.likes != 0) {
       //set postLikes to number of likes the post has
-      postLikes = post.likes.length
+      postLikes = post.likes
       //check if user liked the post
-      if(post.likedByUser != undefined) {
+      if(post.likedByUser != null && post.likedByUser != false) {
         likeTag = `
         <span class="material-icons-outlined likeIcon likeUser">
           favorite

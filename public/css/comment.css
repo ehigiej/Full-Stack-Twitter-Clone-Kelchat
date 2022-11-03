@@ -1,0 +1,41 @@
+#main-container .comment-ref .post {
+    padding: 0;
+    position: relative;
+    border-bottom: none;
+}
+
+#main-container .comment-ref .postSub .image-design {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.postSub .post-a .design {
+    border: 1.5px solid rgb(203, 202, 202);
+    background: rgb(203, 202, 202);
+    flex: 1;
+    height: calc(100% - 50px);
+    position: absolute;
+    top: 50px;
+}
+
+.a-links .post-a {
+    display: flex;
+    justify-content: center;
+}
+
+#main-container .main-main-post .design-top {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+#main-container .main-main-post .design-top .design {
+    height: 20px;
+    border: 1.5px solid rgb(203, 202, 202);
+    background: rgb(203, 202, 202);
+}
+
+/* #main-container .post-comments {
+    padding-bottom: calc(100vh - 390px - 60px - 1rem);
+} */

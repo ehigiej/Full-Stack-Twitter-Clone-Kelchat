@@ -112,6 +112,8 @@ const userInfo = require("./router/userInfo")
 //Handle post and delete of comment
 const comment = require("./router/comment")
 
+const commentPage = require("./router/commentPage")
+
 //PostInfo 
 //Show info about a post via post route 
 const post = require("./router/post")
@@ -138,67 +140,46 @@ app.use("/myInfo", userInfo)
 
 app.use("/postKel", upload.array("fileInput"), comment)
 
-const axios = require("axios")
-
-app.get("/photos", async(req, res) => {
-    const albumId = req.query.albumId
-    let photos = await redisClient.get(`photos?albumId=${albumId}`)
-    if(photos != null) {
-        return res.json(JSON.parse(photos))
-    } else {
-        const {data} = await axios.get(
-            "https://jsonplaceholder.typicode.com/photos",
-            { params : {albumId}}
-        )
-        redisClient.setEx(`photos?albumId=${albumId}`, DEFAULT_EXPIRATION, JSON.stringify(data))
-        res.json(data)
-    }
-})
-
-app.get("/photos/:id", async(req, res)=>{
-    const {data} = await axios.get(
-        `https://jsonplaceholder.typicode.com/photos/${req.params.id}`
-    )
-    res.json(data)
-})
+//Show info about a comment via comment route
+app.use("/comment", commentPage)
 
 //Show info about a post via post route
 app.use("/user", post)
 
 io.on("connection", socket => {
     socket.emit("Message", "Welcome to Kel")
-    socket.on("Login", ({username, followers})=> {
-        // console.log(username, followers)
-        followers.push(username)
+    socket.on("Login", ({userId, followers})=> {
+        followers.push(userId)
         const rooms = [...followers]
         // console.log(rooms)
         socket.join(rooms)
+        // console.log(rooms)
 
         socket.on("post", (msg) => {
-            console.log(username)
-            io.to(username).emit("Message", msg)
+            console.log(userId)
+            io.to(userId).emit("Message", msg)
         })
     })
 })
 
 app.use(async(err, req, res, next) => {
-    console.log(err.message)
+    // console.log(err.message)
     switch (err.message) {
         case "An account exists with this username, Please enter a different username":
             return res.status(500).send("Username already exists")
-            break
+            break;
         case "An Acoount exists with this email, Please enter a different email":
             return res.status(500).send("An account with email already exists")
-            break
+            break;
         case "Username or Email is incorrect":
             return res.status(500).send("Username or Email is incorrect")
-            break
+            break;
         case "Incorrect Password": 
             return res.status(500).send("Incorrect Password")
-            break
+            break;
         case "Comment duplicate":
             return res.status(500).send("Comment duplicate")
-            break
+            break;
         default:
             res.status(500).send(err)
             next(err)

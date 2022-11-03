@@ -8,6 +8,13 @@
     display: flex;
     align-items: center;
     padding: 0.5rem 0;
+    position: fixed;
+    top: 0;
+    height: 60px;
+    width: 100%;
+    z-index: 90;
+    background-color: white;
+    border-bottom: 1px solid rgb(239, 238, 238);
 }
 
 .page-header .return-btn {
@@ -21,7 +28,8 @@
 }
 
 #main-container .main-main-post {
-    padding: 0.6rem 0;
+    padding-top: 50px;
+    padding-bottom: 0.6rem;
 }
 
 .main-main-post.loading {
@@ -31,6 +39,16 @@
 .user-info-div {
     display: flex;
     align-items: center;
+}
+
+.user-info-div .user-link-a {
+    display: flex;
+    align-items: center;
+}
+
+.user-link-a {
+    color: black;
+    text-decoration: none;
 }
 
 .user-info-div .user-info-profile {
@@ -91,6 +109,10 @@
     border-bottom: 1px solid rgb(239, 238, 238);
 }
 
+.main-route-post-div .post-sub-section.checking {
+    display: none;
+}
+
 .main-route-post-div .textarea {
     min-height: 65px;
     font-size: 1.4rem;
@@ -118,7 +140,7 @@
 }
 
 #main-container .loading-div {
-    margin-top: 2.5rem;
+    margin-top: 5rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -171,4 +193,8 @@
 .post-comments .post-div .media.four img ,
 .post-comments .post-div .media.two img {
     height: 100px;
+}
+
+.post-loader {
+    top: 60px;
 }

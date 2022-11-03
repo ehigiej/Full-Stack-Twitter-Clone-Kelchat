@@ -32,10 +32,32 @@
     cursor: pointer;
 }
 
+.post .postSub .a-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.a-links .user-a {
+    height: 50px;
+    width: 50px;
+}
+
+.a-links .post-a {
+    flex: 1;
+}
+
 .postSub .post-div a {
     cursor: pointer;
     color: black;
     text-decoration: none;
+}
+
+.post-div .user-tt-links {
+    display: flex;
+}
+
+.user-tt-links .tt-link {
+    flex: 1;
 }
 
 /* .postSub a:focus {

@@ -4,6 +4,17 @@ export default {
     type: "document",
     fields: [
         {
+            name: "refComment",
+            title: "Reference Comment",
+            type: "array",
+            of: [
+                {
+                    type: "reference",
+                    to: [{type: "comment"}]
+                }
+            ]
+        },
+        {
             name: "caption",
             title: "Caption",
             type: "string"

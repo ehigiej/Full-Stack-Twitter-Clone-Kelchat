@@ -2,118 +2,45 @@
 const client = require("../sanity/sanity") //SANITY CLOUD
 const redisClient = require("../redis/redis") //REDIS CLIENT CLOUD
 
+//Get Informations about current User 
 const userInfo = async(req, res) => {
     const cookies = req.cookies //Get The cookies 
-    const username = cookies.username //get the username from the cookies
-    //perform a query and find the users Followers and Following List 
-    let query = `*[_type == "user" && username == "${username}"] {_id, email, firstName, lastName, profilePicture, username, followers[]->{_id, username, profilePicture}, following[]->{_id, username, profilePicture}}`
+    const userId = cookies.userId //get the userId from the cookies
+    //perform a query and find the users Following List 
+    let query = `*[_type == "user" && _id == "${userId}"] {_id, profilePicture, username, following[]{_ref}}`
     let user = await client.fetch(query) //get the user Info from sanity
-    // //Loop through the user's followers and push each user to an  string array
-    // let followers;
-    // if(user[0].followers) {
-    //     //check if the user has followers and append each follower to a string array
-    //     followers = "["
-    //     let followersLength = user[0].followers.length - 1 //get the number of followers
-    //     user[0].followers.forEach((user, index) => {
-    //         if(index == followersLength) {
-    //             followers += '"'
-    //             followers += user._ref
-    //             followers += '"'
-    //         } else {
-    //             followers += '"'
-    //             followers += user._ref
-    //             followers += '",'
-    //         }
-    //     })
-    //     followers += "]" //close the followers string array 
-    // }
-
-    // let following;
-    // if(user[0].following) {
-    //     //check if the user is following anyone and append each person to a string array
-    //     //do same for following 
-    //     following = "["
-    //     let followingLength = user[0].following.length - 1//get the number of following 
-    //     user[0].following.forEach((user, index) => {
-    //         //push user._ref (id)
-    //         if(index == followingLength) {
-    //             following += '"'
-    //             following += user._ref 
-    //             following += '"'
-    //         } else {
-    //             following += '"'
-    //             following += user._ref 
-    //             following += '",'
-    //         }
-    //     })
-    //     following += "]" //close the following string array 
-    // }
-
-    // //query through the user's followers
-    // let userFollowers;
-    // if(user[0].followers) {
-    //     let followersQuery = `*[_type == "user" && _id in ${followers}]{_id, username, profilePicture}`
-    //     userFollowers = await client.fetch(followersQuery)
-    // } else {
-    //     userFollowers = [] //return empty array is user has no followers
-    // }
-
-    // //query through the user's following 
-    // let userFollowing;
-    // if(user[0].following) {
-    //     let followingQuery = `*[_type == "user" && _id in ${following}]{_id, username, profilePicture}`
-    //     userFollowing = await client.fetch(followingQuery)
-    // } else {
-    //     userFollowing = [] //return empty array if user is following noone
-    // }
-    // res.status(200).json({
-    //     username: user[0].username,
-    //     profilePicture: user[0].profilePicture,
-    //     userId: user[0]._id,
-    //     followers: userFollowers,
-    //     following: userFollowing
-    // })
+    if(user.length == 0)  throw new Error("No User Found")
     res.send(user);
 }
 
-//get the latest post from the user's followers
+//get the latest post from the user's currentUser is following
 const post = async(req, res) => {
-    const start = req.body.start 
-    const stop = req.body.stop 
+    /* Querying for all post might take a time, so a start and stop is used to determine the amount of post to query for. 
+    as the user scrolls down, start and stop increases */
+    const start = req.body.start //Get The Start 
+    const stop = req.body.stop //Get The Stop 
     const cookies = req.cookies //get the cookies 
     const userId = cookies.userId //get the user's Id 
-    let cachePost = await redisClient.get("post")
+    let cachePost = await redisClient.get(`post.${userId}.${stop}`) 
     if(cachePost != null ) return res.json(JSON.parse(cachePost))
     else {
-        //get the user's following list 
-        let followingQuery = `*[_type == "user" && _id == "${userId}"] {following[]{_ref}}`
-        const followingList = await client.fetch(followingQuery)
-        //Deconstruct followingList to an array of string 
-        let followingStringArray = ""
-        let followingListLength = followingList[0].following.length //get the number's of users current user is following
-        followingList[0].following.forEach((user, index) => {
-            followingStringArray += '"'
-            followingStringArray += user._ref
-            followingStringArray += '"'
-            if(index != followingListLength - 1)  followingStringArray += ","
-        })
-        followingStringArray += `,"${userId}"`
-        //Query through the database and get the latest post from the database 
-        let latestPostQuery = `*[_type == "post" && references([${followingStringArray}])][${start}..${stop}] | order(_createdAt desc)`
-        let latestPost = await client.fetch(latestPostQuery)
-        //Get The User Info for Each Post as Post comes with a reference for a User Id
-        for (let i = 0; i < latestPost.length; i++) {
-            //check if the current user liked the post and set likedByUser to True
-            if(latestPost[i].likes != undefined && latestPost[i].likes.length != 0) {
-                latestPost[i].likes.forEach(likes => {
-                    if(likes._ref === userId) latestPost[i]["likedByUser"] = true
-                })
-            }
-            let userQuery = `*[_type == "user" && _id == "${latestPost[i].postedBy._ref}"]{profilePicture, username, _id}` //get the user Informations
-            let userInfo = await client.fetch(userQuery)
-            latestPost[i]["userInfo"] = userInfo[0]
-        }
-        redisClient.setEx(`post`, 7200, JSON.stringify(latestPost))
+        /* GET THE LATEST POST FROM THE USER"S FOLLOWING LIST USING PostQuery */
+        let postQuery = `*[_type == "post" && (postedBy._ref in *[_type == "user" && _id == "${userId}"].following[]._ref || postedBy._ref in ["${userId}"])]
+                                        [${start}..${stop}] | order(_createdAt desc) 
+                                        {_id,
+                                        caption,
+                                        postedBy->{
+                                            username,
+                                            profilePicture,
+                                            _id
+                                        },
+                                        media,
+                                        "postComment" : count(postComment),
+                                        "likes" : count(likes),
+                                        "likedByUser" : "${userId}" in likes[]._ref}`
+        const latestPost = await client.fetch(postQuery)
+        //cache the post, making reference of the userId and the stop value
+        redisClient.setEx(`post.${userId}.${stop}`, 7200, JSON.stringify(latestPost))
         res.status(200).send(latestPost)
     }
 }
@@ -164,9 +91,45 @@ const commentLike = async(req, res) => {
     res.status(200).send("success")
 }
 
+
+const postTest = async(req, res) => {
+    /* Querying for all post might take a time, so a start and stop is used to determine the amount of post to query for. 
+    as the user scrolls down, start and stop increases */
+    const start = req.body.start //Get The Start 
+    const stop = req.body.stop //Get The Stop 
+    const cookies = req.cookies //get the cookies 
+    const userId = cookies.userId //get the user's Id 
+    // let cachePost = await redisClient.get(`post`) 
+    // if(cachePost != null ) return res.json(JSON.parse(cachePost))
+    if(1 == 100) {
+
+    } else {
+        /* GET THE LATEST POST FROM THE USER"S FOLLOWING LIST USING PostQuery */
+        let postQuery = `*[_type == "post" && (postedBy._ref in *[_type == "user" && _id == "${userId}"].following[]._ref || postedBy._ref in ["${userId}"])]
+                                        [${start}..${stop}] | order(_createdAt desc) 
+                                        {_id,
+                                        caption,
+                                        postedBy->{
+                                            username,
+                                            profilePicture,
+                                            _id
+                                        },
+                                        media,
+                                        "postComment" : count(postComment),
+                                        "likes" : count(likes),
+                                        "likedByUser" : "${userId}" in likes[]._ref}`
+        // let postQuery1 = `*[_type == "post" && (postedBy._ref in *[_type == "user" && _id == "${userId}"].following[]._ref || postedBy._ref in ["${userId}"])] {_id}`
+        const latestPost = await client.fetch(postQuery)
+        // //cache the post, making reference of the userId and the stop value
+        // redisClient.setEx(`post`, 7200, JSON.stringify(latestPost))
+        return res.send(latestPost)
+    }
+}
+
 module.exports = {
     userInfo,
     post,
     like,
-    commentLike
+    commentLike,
+    postTest
 }
